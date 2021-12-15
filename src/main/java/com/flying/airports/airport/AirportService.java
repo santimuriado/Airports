@@ -31,8 +31,9 @@ public class AirportService {
     }
 
     public void addNewAirport(Airport airport) {
-        //TODO: make findByCity.
-        /*Optional<Airport> airportOptional = airportRepository.findByCity(airport.getCity());
+
+        //TODO: implement findByAirportName.
+        /*Optional<Airport> airportOptional = airportRepository.findByAirportName(airport.getAirportName());
         if(airportOptional.isPresent()) {
             throw new IllegalStateException("city taken");
         }*/
@@ -49,20 +50,19 @@ public class AirportService {
     }
 
     @Transactional
-    public void updateAirportNumberOfPlanes(Long airportId,Integer maxNumberPlanes) {
+    public void updateAirport(Long airportId,Integer maxNumberPlanes, String airportName) {
 
         Airport airport = airportRepository.findById(airportId).orElseThrow(() ->
                 new IllegalStateException("airport with id " + "does not exist"));
 
-        airport.setMaxNumberPlanes(maxNumberPlanes);
+        if(airportName != null && airportName.length() > 0) {
+            airport.setAirportName(airportName);
+        }
+
+        if(maxNumberPlanes != null && maxNumberPlanes>0) {
+            airport.setMaxNumberPlanes(maxNumberPlanes);
+        }
+
     }
 
-    @Transactional
-    public void updateAirportName(Long airportId, String airportName) {
-
-        Airport airport = airportRepository.findById(airportId).orElseThrow(() ->
-                new IllegalStateException("airport with id " + "does not exist"));
-
-        airport.setAirportName(airportName);
-    }
 }

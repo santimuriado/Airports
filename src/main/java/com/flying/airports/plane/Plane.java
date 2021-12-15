@@ -30,17 +30,10 @@ public class Plane {
     private String planeName;
 
     @Column(
-            name = "max_number_planes",
+            name = "max_number_seats",
             nullable = false
     )
     private Integer maxNumberSeats;
-
-    @Column(
-            name = "takeoff_airport",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    private String takeoffAirport;
 
     @Column(
             name = "landing_airport",
@@ -52,7 +45,6 @@ public class Plane {
     public Plane(String planeName, Integer maxNumberSeats, String takeoffAirport, String landingAirport) {
         this.planeName = planeName;
         this.maxNumberSeats = maxNumberSeats;
-        this.takeoffAirport = takeoffAirport;
         this.landingAirport = landingAirport;
     }
 }
