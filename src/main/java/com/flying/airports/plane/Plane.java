@@ -42,7 +42,7 @@ public class Plane {
     )
     private String landingAirport;
 
-    public Plane(String planeName, Integer maxNumberSeats, String takeoffAirport, String landingAirport) {
+    public Plane(String planeName, Integer maxNumberSeats, String landingAirport) {
         this.planeName = planeName;
         this.maxNumberSeats = maxNumberSeats;
         this.landingAirport = landingAirport;

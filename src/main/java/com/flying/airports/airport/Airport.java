@@ -1,11 +1,15 @@
 package com.flying.airports.airport;
 
 
+import com.flying.airports.plane.Plane;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity(name = "Airport")
@@ -48,7 +52,16 @@ public class Airport {
     )
     private Integer maxNumberPlanes;
 
-    Airport(String airportName, String city, Integer maxNumberPlanes) {
+    @Column(
+            name = "current_number_planes",
+            nullable = false
+    )
+    private Integer currentNumberPlanes = 0;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Plane> planes = new ArrayList<>();
+
+    public Airport(String airportName, String city, Integer maxNumberPlanes) {
         this.airportName = airportName;
         this.city = city;
         this.maxNumberPlanes = maxNumberPlanes;
