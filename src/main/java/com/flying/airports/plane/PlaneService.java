@@ -1,5 +1,6 @@
 package com.flying.airports.plane;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -7,13 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PlaneService {
 
     private final PlaneRepository planeRepository;
-
-    public PlaneService(PlaneRepository planeRepository) {
-        this.planeRepository = planeRepository;
-    }
 
     public List<Plane> getPlanes() {
         return planeRepository.findAll();
@@ -32,11 +30,10 @@ public class PlaneService {
 
     public void addNewPlane(Plane plane) {
 
-        //TODO: implement findByPlaneName.
-        /*Optional<Plane> planeOptional = planeRepository.findByPlaneName(plane.getPlaneName());
+        Optional<Plane> planeOptional = planeRepository.optionalFindByPlaneName(plane.getPlaneName());
         if(planeOptional.isPresent()) {
             throw new IllegalStateException("plane with that name already exists");
-        }*/
+        }
         planeRepository.save(plane);
     }
 
