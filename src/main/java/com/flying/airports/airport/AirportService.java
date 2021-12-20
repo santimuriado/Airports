@@ -4,6 +4,7 @@ import com.flying.airports.plane.Plane;
 import com.flying.airports.plane.PlaneRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -67,7 +68,10 @@ public class AirportService {
     }
 
     @Transactional
-    public void updateAirport(Long airportId,Integer maxNumberPlanes, String airportName) {
+    public void updateAirport(Long airportId,
+                              Integer maxNumberPlanes,
+                              String airportName,
+                              String city) {
 
         Airport airport = airportRepository.findById(airportId).orElseThrow(() ->
                 new IllegalStateException("airport with id " + "does not exist"));
@@ -78,6 +82,10 @@ public class AirportService {
 
         if(maxNumberPlanes != null && maxNumberPlanes>0) {
             airport.setMaxNumberPlanes(maxNumberPlanes);
+        }
+
+        if(city != null && city.length() > 0) {
+            airport.setCity(city);
         }
 
     }
