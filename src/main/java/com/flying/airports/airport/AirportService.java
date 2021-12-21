@@ -4,7 +4,6 @@ import com.flying.airports.plane.Plane;
 import com.flying.airports.plane.PlaneRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -34,7 +33,7 @@ public class AirportService {
 
     public void addNewAirport(Airport airport) {
 
-        Optional<Airport> airportOptional = airportRepository.optionalFindByAirportName(airport.getAirportName());
+        Optional<Airport> airportOptional = airportRepository.findByAirportName(airport.getAirportName());
         if(airportOptional.isPresent()) {
             throw new IllegalStateException("airport name taken");
         }
@@ -44,8 +43,8 @@ public class AirportService {
     @Transactional
     public void addNewPlane(String airportName,String planeName) {
 
-        Plane plane = planeRepository.findByPlaneName(planeName);
-        Airport airport = airportRepository.findByAirportName(airportName);
+        Plane plane = planeRepository.findByPlaneName(planeName).get();
+        Airport airport = airportRepository.findByAirportName(airportName).get();
 
         Integer currentNumberPlanes = airport.getCurrentNumberPlanes();
 
@@ -88,6 +87,17 @@ public class AirportService {
             airport.setCity(city);
         }
 
+    }
+
+    public List<Plane> getAirportPlanes(Long airportId) {
+
+        Optional<Airport> airportOptional = airportRepository.findById(airportId);
+        if(airportOptional.isPresent()) {
+            return airportOptional.get().getPlanes();
+        }
+        else {
+            throw new IllegalStateException("airport with id does not exist");
+        }
     }
 
 }

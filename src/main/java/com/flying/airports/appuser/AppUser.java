@@ -1,9 +1,16 @@
 package com.flying.airports.appuser;
 
+import com.flying.airports.security.ApplicationUserRole;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity(name = "AppUser")
 @Data
@@ -14,7 +21,8 @@ import javax.persistence.*;
         }
 )
 @NoArgsConstructor
-public class AppUser {
+@EqualsAndHashCode
+public class AppUser implements UserDetails {
 
     @Id
     @SequenceGenerator(
@@ -47,9 +55,44 @@ public class AppUser {
     )
     private String email;
 
-    public AppUser(String username, String password, String email) {
+    @Enumerated(EnumType.STRING)
+    private ApplicationUserRole applicationUserRole;
+
+    private Boolean locked = false;
+    private Boolean enabled = false;
+
+    public AppUser(String username, String password, String email, ApplicationUserRole applicationUserRole) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.applicationUserRole = applicationUserRole;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        /*SimpleGrantedAuthority authority = new SimpleGrantedAuthority(applicationUserRole.name());
+        return Collections.singletonList(authority);*/
+        //TODO: return authorities correctly.
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

@@ -1,8 +1,13 @@
 package com.flying.airports.security;
 
+import com.flying.airports.appuser.AppUserService;
+import com.flying.airports.registration.RegistrationRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,15 +24,11 @@ import static com.flying.airports.security.ApplicationUserRole.USER;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@AllArgsConstructor
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
+    private final AppUserService appUserService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -35,6 +36,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/api/v*/registration/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -42,6 +44,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(appUserService);
+        return provider;
+    }
+
+    /*@Override
     @Bean
     protected UserDetailsService userDetailsService() {
         UserDetails adminUser = User.builder()
@@ -59,5 +74,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 adminUser,
                 normalUser
         );
-    }
+    }*/
+
+    /*
+    public void registerUsers() {
+
+        RegistrationRequest request = new RegistrationRequest(
+
+        )
+    }*/
 }

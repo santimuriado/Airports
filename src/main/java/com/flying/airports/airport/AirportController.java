@@ -1,10 +1,12 @@
 package com.flying.airports.airport;
 
 
+import com.flying.airports.plane.Plane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
 import java.util.List;
 
 @RestController
@@ -22,6 +24,12 @@ public class AirportController {
     @PreAuthorize("hasAuthority('user:read')")
     public List<Airport> getAirports() {
         return airportService.getAirports();
+    }
+
+    @GetMapping(path = "{airportId}/planes")
+    @PreAuthorize("hasAuthority('user:read')")
+    public List<Plane> getAirportPlanes(@PathVariable("airportId") Long airportId) {
+        return airportService.getAirportPlanes(airportId);
     }
 
     @GetMapping(path = "{airportId}")

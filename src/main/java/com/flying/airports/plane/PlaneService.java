@@ -30,7 +30,7 @@ public class PlaneService {
 
     public void addNewPlane(Plane plane) {
 
-        Optional<Plane> planeOptional = planeRepository.optionalFindByPlaneName(plane.getPlaneName());
+        Optional<Plane> planeOptional = planeRepository.findByPlaneName(plane.getPlaneName());
         if(planeOptional.isPresent()) {
             throw new IllegalStateException("plane with that name already exists");
         }
