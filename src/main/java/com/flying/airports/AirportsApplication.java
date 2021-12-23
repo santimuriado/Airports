@@ -4,6 +4,9 @@ import com.flying.airports.airport.Airport;
 import com.flying.airports.airport.AirportService;
 import com.flying.airports.plane.Plane;
 import com.flying.airports.plane.PlaneService;
+import com.flying.airports.registration.RegistrationRequest;
+import com.flying.airports.registration.RegistrationService;
+import com.flying.airports.security.ApplicationUserRole;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +23,9 @@ public class AirportsApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(AirportService airportService, PlaneService planeService) {
+	CommandLineRunner run(AirportService airportService,
+						  PlaneService planeService,
+						  RegistrationService registrationService) {
 		return args -> {
 			planeService.addNewPlane(new Plane("Hawker Hurricane",140,"Berlin"));
 			planeService.addNewPlane(new Plane("U-2 Spy Plane",100,"London"));
@@ -42,6 +47,11 @@ public class AirportsApplication {
 
 			airportService.addNewPlane("Chengdu Shuangliu International Airport","Hawker Hurricane");
 			airportService.addNewPlane("Chengdu Shuangliu International Airport","U-2 Spy Plane");
+
+			String adminToken = registrationService.register(new RegistrationRequest("admin","password","admin@gmail.com", ApplicationUserRole.ADMIN));
+			String userToken = registrationService.register(new RegistrationRequest("user","password","user@gmail.com", ApplicationUserRole.USER));
+			registrationService.confirmToken(adminToken);
+			registrationService.confirmToken(userToken);
 
 		};
 	}

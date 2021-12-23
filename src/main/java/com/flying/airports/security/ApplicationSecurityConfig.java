@@ -56,31 +56,4 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-    /*@Override
-    @Bean
-    protected UserDetailsService userDetailsService() {
-        UserDetails adminUser = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("password"))
-                .authorities(ADMIN.getGrantedAuthorities())
-                .build();
-        UserDetails normalUser = User.builder()
-                .username("user")
-                .password(passwordEncoder.encode("password"))
-                .authorities(USER.getGrantedAuthorities())
-                .build();
-
-        return new InMemoryUserDetailsManager(
-                adminUser,
-                normalUser
-        );
-    }*/
-
-    /*
-    public void registerUsers() {
-
-        RegistrationRequest request = new RegistrationRequest(
-
-        )
-    }*/
 }

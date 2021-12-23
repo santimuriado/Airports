@@ -2,6 +2,7 @@ package com.flying.airports.airport;
 
 
 import com.flying.airports.plane.Plane;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1/airport" )
+@RequiredArgsConstructor
 public class AirportController {
 
     private final AirportService airportService;
-
-    @Autowired
-    public AirportController(AirportService airportService) {
-        this.airportService = airportService;
-    }
 
     @GetMapping
     @PreAuthorize("hasAuthority('user:read')")

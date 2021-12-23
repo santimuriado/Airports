@@ -70,10 +70,7 @@ public class AppUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        /*SimpleGrantedAuthority authority = new SimpleGrantedAuthority(applicationUserRole.name());
-        return Collections.singletonList(authority);*/
-        //TODO: return authorities correctly.
-        return null;
+        return applicationUserRole.getGrantedAuthorities();
     }
 
     @Override

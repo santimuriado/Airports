@@ -36,6 +36,12 @@ public class Plane {
     private Integer maxNumberSeats;
 
     @Column(
+            name = "current_number_seats",
+            nullable = false
+    )
+    private Integer currentNumberSeats = 0;
+
+    @Column(
             name = "landing_airport",
             nullable = false,
             columnDefinition = "TEXT"
