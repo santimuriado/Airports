@@ -1,5 +1,6 @@
 package com.flying.airports.plane;
 
+import com.flying.airports.ticket.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,22 +36,12 @@ public class Plane {
     )
     private Integer maxNumberSeats;
 
-    @Column(
-            name = "current_number_seats",
-            nullable = false
-    )
-    private Integer currentNumberSeats = 0;
+    @ManyToOne
+    @JoinColumn(name = "ticket_id")
+    private Ticket ticket;
 
-    @Column(
-            name = "landing_airport",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    private String landingAirport;
-
-    public Plane(String planeName, Integer maxNumberSeats, String landingAirport) {
+    public Plane(String planeName, Integer maxNumberSeats) {
         this.planeName = planeName;
         this.maxNumberSeats = maxNumberSeats;
-        this.landingAirport = landingAirport;
     }
 }

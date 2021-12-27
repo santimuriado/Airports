@@ -7,6 +7,8 @@ import com.flying.airports.plane.PlaneService;
 import com.flying.airports.registration.RegistrationRequest;
 import com.flying.airports.registration.RegistrationService;
 import com.flying.airports.security.ApplicationUserRole;
+import com.flying.airports.ticket.Ticket;
+import com.flying.airports.ticket.TicketService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,33 +27,47 @@ public class AirportsApplication {
 	@Bean
 	CommandLineRunner run(AirportService airportService,
 						  PlaneService planeService,
-						  RegistrationService registrationService) {
+						  RegistrationService registrationService,
+						  TicketService ticketService) {
 		return args -> {
-			planeService.addNewPlane(new Plane("Hawker Hurricane",140,"Berlin"));
-			planeService.addNewPlane(new Plane("U-2 Spy Plane",100,"London"));
-			planeService.addNewPlane(new Plane("B-52 Stratofortress",75,"New York"));
-			planeService.addNewPlane(new Plane("F-16 Fighting Falcon",50,"Paris"));
+			planeService.addNewPlane(new Plane("Hawker Hurricane",140));
+			planeService.addNewPlane(new Plane("U-2 Spy Plane",100));
+			planeService.addNewPlane(new Plane("B-52 Stratofortress",75));
+			planeService.addNewPlane(new Plane("F-16 Fighting Falcon",50));
 
-			airportService.addNewAirport(new Airport("Guangzhou Baiyun International Airport","Baiyun-Huadu",20));
-			airportService.addNewAirport(new Airport("Hartsfield–Jackson Atlanta International Airport","Atlanta",10));
-			airportService.addNewAirport(new Airport("Chengdu Shuangliu International Airport","Shuangliu-Wuhou",5));
+			airportService.addNewAirport(new Airport("London Airport","London",20));
+			airportService.addNewAirport(new Airport("Atlanta Airport","Atlanta",10));
+			airportService.addNewAirport(new Airport("Berlin Airport","Berlin",5));
 
-			airportService.addNewPlane("Guangzhou Baiyun International Airport","Hawker Hurricane");
-			airportService.addNewPlane("Guangzhou Baiyun International Airport","U-2 Spy Plane");
-			airportService.addNewPlane("Guangzhou Baiyun International Airport","B-52 Stratofortress");
-			airportService.addNewPlane("Guangzhou Baiyun International Airport","F-16 Fighting Falcon");
+			airportService.addNewPlane("London Airport","Hawker Hurricane");
+			airportService.addNewPlane("London Airport","U-2 Spy Plane");
+			airportService.addNewPlane("London Airport","B-52 Stratofortress");
+			airportService.addNewPlane("London Airport","F-16 Fighting Falcon");
 
-			airportService.addNewPlane("Hartsfield–Jackson Atlanta International Airport","Hawker Hurricane");
-			airportService.addNewPlane("Hartsfield–Jackson Atlanta International Airport","U-2 Spy Plane");
-			airportService.addNewPlane("Hartsfield–Jackson Atlanta International Airport","B-52 Stratofortress");
+			airportService.addNewPlane("Atlanta Airport","Hawker Hurricane");
+			airportService.addNewPlane("Atlanta Airport","U-2 Spy Plane");
+			airportService.addNewPlane("Atlanta Airport","B-52 Stratofortress");
 
-			airportService.addNewPlane("Chengdu Shuangliu International Airport","Hawker Hurricane");
-			airportService.addNewPlane("Chengdu Shuangliu International Airport","U-2 Spy Plane");
+			airportService.addNewPlane("Berlin Airport","Hawker Hurricane");
+			airportService.addNewPlane("Berlin Airport","U-2 Spy Plane");
 
 			String adminToken = registrationService.register(new RegistrationRequest("admin","password","admin@gmail.com", ApplicationUserRole.ADMIN));
 			String userToken = registrationService.register(new RegistrationRequest("user","password","user@gmail.com", ApplicationUserRole.USER));
 			registrationService.confirmToken(adminToken);
 			registrationService.confirmToken(userToken);
+
+			ticketService.addNewTicket(new Ticket("Berlin Airport"));
+			ticketService.addNewTicket(new Ticket("Atlanta Airport"));
+			ticketService.addNewTicket(new Ticket("London Airport"));
+
+			airportService.addNewTicket("London Airport","Berlin Airport");
+			airportService.addNewTicket("London Airport","Atlanta Airport");
+
+			airportService.addNewTicket("Berlin Airport","London Airport");
+			airportService.addNewTicket("Berlin Airport","Atlanta Airport");
+
+			airportService.addNewTicket("Atlanta Airport","Berlin Airport");
+			airportService.addNewTicket("Atlanta Airport","London Airport");
 
 		};
 	}

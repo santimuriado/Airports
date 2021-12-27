@@ -2,6 +2,7 @@ package com.flying.airports.airport;
 
 
 import com.flying.airports.plane.Plane;
+import com.flying.airports.ticket.Ticket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,6 +28,12 @@ public class AirportController {
     @PreAuthorize("hasAuthority('user:read')")
     public List<Plane> getAirportPlanes(@PathVariable("airportId") Long airportId) {
         return airportService.getAirportPlanes(airportId);
+    }
+
+    @GetMapping(path = "{airportId}/tickets")
+    @PreAuthorize("hasAuthority('user:read')")
+    public List<Ticket> getAirportTickets(@PathVariable("airportId") Long airportId) {
+        return airportService.getAirportTickets(airportId);
     }
 
     @GetMapping(path = "{airportId}")

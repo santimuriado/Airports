@@ -2,6 +2,8 @@ package com.flying.airports.airport;
 
 import com.flying.airports.plane.Plane;
 import com.flying.airports.plane.PlaneRepository;
+import com.flying.airports.ticket.Ticket;
+import com.flying.airports.ticket.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ public class AirportService {
 
     private final AirportRepository airportRepository;
     private final PlaneRepository planeRepository;
+    private final TicketRepository ticketRepository;
 
     public List<Airport> getAirports() {
         return airportRepository.findAll();
@@ -46,15 +49,25 @@ public class AirportService {
         Plane plane = planeRepository.findByPlaneName(planeName).get();
         Airport airport = airportRepository.findByAirportName(airportName).get();
 
-        Integer currentNumberPlanes = airport.getCurrentNumberPlanes();
+        Integer currentNumberPlanes = airport.getPlanes().size();
 
         if(currentNumberPlanes < airport.getMaxNumberPlanes()) {
             airport.getPlanes().add(plane);
-            airport.setCurrentNumberPlanes(++currentNumberPlanes);
         }
         else {
             throw new IllegalStateException("airport is at max capacity");
         }
+    }
+
+    @Transactional
+    public void addNewTicket(String airportName,String landingAirport) {
+
+        Ticket ticket = ticketRepository.findByLandingAirport(landingAirport).get();
+        Airport airport = airportRepository.findByAirportName(airportName).get();
+
+        //TODO: check duplicate tickets.
+
+        airport.getTickets().add(ticket);
     }
 
     public void deleteAirport(Long airportId) {
@@ -86,7 +99,12 @@ public class AirportService {
         if(city != null && city.length() > 0) {
             airport.setCity(city);
         }
+    }
 
+    @Transactional
+    public void assignTicketToPlane(String planeName,String landingAirport) {
+
+        //TODO: implment it.
     }
 
     public List<Plane> getAirportPlanes(Long airportId) {
@@ -94,6 +112,17 @@ public class AirportService {
         Optional<Airport> airportOptional = airportRepository.findById(airportId);
         if(airportOptional.isPresent()) {
             return airportOptional.get().getPlanes();
+        }
+        else {
+            throw new IllegalStateException("airport with id does not exist");
+        }
+    }
+
+    public List<Ticket> getAirportTickets(Long airportId) {
+
+        Optional<Airport> airportOptional = airportRepository.findById(airportId);
+        if(airportOptional.isPresent()) {
+            return airportOptional.get().getTickets();
         }
         else {
             throw new IllegalStateException("airport with id does not exist");

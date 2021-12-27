@@ -46,14 +46,4 @@ public class PlaneService {
         planeRepository.deleteById(planeId);
     }
 
-    @Transactional
-    public void updatePlaneLandingAirport(Long planeId, String landingAirport) {
-
-        Plane plane = planeRepository.findById(planeId).orElseThrow(() ->
-                new IllegalStateException("plane with id " + "does not exist"));
-
-        plane.setLandingAirport(landingAirport);
-    }
-
-
 }

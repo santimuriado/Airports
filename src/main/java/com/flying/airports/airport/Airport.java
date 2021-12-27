@@ -2,6 +2,7 @@ package com.flying.airports.airport;
 
 
 import com.flying.airports.plane.Plane;
+import com.flying.airports.ticket.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,14 +53,11 @@ public class Airport {
     )
     private Integer maxNumberPlanes;
 
-    @Column(
-            name = "current_number_planes",
-            nullable = false
-    )
-    private Integer currentNumberPlanes = 0;
-
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Plane> planes = new ArrayList<>();
+
+    @ManyToMany
+    private List<Ticket> tickets = new ArrayList<>();
 
     public Airport(String airportName, String city, Integer maxNumberPlanes) {
         this.airportName = airportName;
