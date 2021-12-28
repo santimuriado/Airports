@@ -1,7 +1,6 @@
 package com.flying.airports.ticket;
 
 
-import com.flying.airports.airport.Airport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +25,17 @@ public class TicketService {
         }
         else {
             throw new IllegalStateException("ticket with that id does not exist");
+        }
+    }
+
+    public Ticket getSingleTicket(String landingAirport) {
+
+        Optional<Ticket> ticketOptional = ticketRepository.findByLandingAirport(landingAirport);
+        if(ticketOptional.isPresent()) {
+            return ticketOptional.get();
+        }
+        else {
+            throw new IllegalStateException("ticket with that landing airport does not exist");
         }
     }
 

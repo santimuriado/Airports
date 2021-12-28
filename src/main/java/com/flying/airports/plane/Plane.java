@@ -1,11 +1,14 @@
 package com.flying.airports.plane;
 
+import com.flying.airports.appuser.AppUser;
 import com.flying.airports.ticket.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity(name = "Plane")
@@ -39,6 +42,9 @@ public class Plane {
     @ManyToOne
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<AppUser> users = new ArrayList<>();
 
     public Plane(String planeName, Integer maxNumberSeats) {
         this.planeName = planeName;

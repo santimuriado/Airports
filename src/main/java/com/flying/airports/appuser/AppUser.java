@@ -1,6 +1,7 @@
 package com.flying.airports.appuser;
 
 import com.flying.airports.security.ApplicationUserRole;
+import com.flying.airports.ticket.Ticket;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -60,6 +61,10 @@ public class AppUser implements UserDetails {
 
     private Boolean locked = false;
     private Boolean enabled = false;
+
+    @ManyToOne
+    @JoinColumn(name = "ticket_id")
+    private Ticket ticket;
 
     public AppUser(String username, String password, String email, ApplicationUserRole applicationUserRole) {
         this.username = username;

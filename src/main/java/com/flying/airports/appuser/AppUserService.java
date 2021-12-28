@@ -1,7 +1,12 @@
 package com.flying.airports.appuser;
 
+import com.flying.airports.airport.Airport;
+import com.flying.airports.airport.AirportService;
+import com.flying.airports.plane.Plane;
 import com.flying.airports.registration.token.ConfirmationToken;
 import com.flying.airports.registration.token.ConfirmationTokenService;
+import com.flying.airports.ticket.Ticket;
+import com.flying.airports.ticket.TicketService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +29,9 @@ public class AppUserService implements UserDetailsService {
     private final ConfirmationTokenService confirmationTokenService;
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
 
+    private final AirportService airportService;
+    private final TicketService ticketService;
+
     public List<AppUser> getUsers() {
         return appUserRepository.findAll();
     }
@@ -36,6 +45,16 @@ public class AppUserService implements UserDetailsService {
         else {
             throw new IllegalStateException("user with id does not exist");
         }
+    }
+
+    @Transactional
+    public void purchaseTicket(String takeOffAirport, String landingAirport,String appUserEmail) {
+
+        AppUser appUser = appUserRepository.findByEmail(appUserEmail).get();
+        Ticket ticket = ticketService.getSingleTicket(landingAirport);
+        Plane plane = airportService.getSinglePlane(takeOffAirport,landingAirport);
+        plane.getUsers().add(appUser);
+        appUser.setTicket(ticket);
     }
 
     public String signUpUser(AppUser appUser) {

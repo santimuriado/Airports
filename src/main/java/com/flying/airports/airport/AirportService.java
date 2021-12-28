@@ -7,8 +7,10 @@ import com.flying.airports.ticket.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 
 @Service
@@ -31,6 +33,17 @@ public class AirportService {
         }
         else {
             throw new IllegalStateException("airport with id does not exist");
+        }
+    }
+
+    public Airport getSingleAirport(String airportName) {
+
+        Optional<Airport> airportOptional = airportRepository.findByAirportName(airportName);
+        if(airportOptional.isPresent()) {
+            return airportOptional.get();
+        }
+        else {
+            throw new IllegalStateException("airport with that name does not exist");
         }
     }
 
@@ -101,10 +114,45 @@ public class AirportService {
         }
     }
 
+    //Allows overwriting of tickets.
     @Transactional
-    public void assignTicketToPlane(String planeName,String landingAirport) {
+    public void assignTicketToPlane(String airportName,String planeName,String landingAirport) {
 
-        //TODO: implment it.
+        Optional<Ticket> optionalTicket = ticketRepository.findByLandingAirport(landingAirport);
+        Optional<Plane> optionalPlane = planeRepository.findByPlaneName(planeName);
+
+        if (optionalTicket.isEmpty()) {
+            throw new IllegalStateException("ticket with that landing airport does not exist");
+        }
+
+        if (optionalPlane.isEmpty()) {
+            throw new IllegalStateException("plane with that name does not exist");
+        }
+
+        Ticket ticket = optionalTicket.get();
+        Plane plane = optionalPlane.get();
+
+        if (getAirportPlanes(airportName).contains(plane)
+                && getAirportTickets(airportName).contains(ticket)) {
+            int planeIndex = getAirportPlanes(airportName).indexOf(plane);
+            plane.setTicket(ticket);
+            getAirportPlanes(airportName).set(planeIndex,plane);
+        }
+
+        else {
+            throw new IllegalStateException("the ticket or the plane do not exist in the airport");
+        }
+    }
+
+    public Plane getSinglePlane(String airportName, String landingAirport) {
+
+        List<Plane> airportPlanes = getAirportPlanes(airportName);
+        Plane plane = null;
+
+        //TODO: implement search plane by ticket.
+
+        return plane;
+
     }
 
     public List<Plane> getAirportPlanes(Long airportId) {
@@ -118,6 +166,17 @@ public class AirportService {
         }
     }
 
+    public List<Plane> getAirportPlanes(String airportName) {
+
+        Optional<Airport> airportOptional = airportRepository.findByAirportName(airportName);
+        if(airportOptional.isPresent()) {
+            return airportOptional.get().getPlanes();
+        }
+        else {
+            throw new IllegalStateException("airport with that name does not exist");
+        }
+    }
+
     public List<Ticket> getAirportTickets(Long airportId) {
 
         Optional<Airport> airportOptional = airportRepository.findById(airportId);
@@ -126,6 +185,17 @@ public class AirportService {
         }
         else {
             throw new IllegalStateException("airport with id does not exist");
+        }
+    }
+
+    public List<Ticket> getAirportTickets(String airportName) {
+
+        Optional<Airport> airportOptional = airportRepository.findByAirportName(airportName);
+        if(airportOptional.isPresent()) {
+            return airportOptional.get().getTickets();
+        }
+        else {
+            throw new IllegalStateException("airport with that name does not exist");
         }
     }
 

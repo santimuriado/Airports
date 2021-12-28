@@ -2,6 +2,7 @@ package com.flying.airports;
 
 import com.flying.airports.airport.Airport;
 import com.flying.airports.airport.AirportService;
+import com.flying.airports.appuser.AppUserService;
 import com.flying.airports.plane.Plane;
 import com.flying.airports.plane.PlaneService;
 import com.flying.airports.registration.RegistrationRequest;
@@ -28,7 +29,8 @@ public class AirportsApplication {
 	CommandLineRunner run(AirportService airportService,
 						  PlaneService planeService,
 						  RegistrationService registrationService,
-						  TicketService ticketService) {
+						  TicketService ticketService,
+						  AppUserService appUserService) {
 		return args -> {
 			planeService.addNewPlane(new Plane("Hawker Hurricane",140));
 			planeService.addNewPlane(new Plane("U-2 Spy Plane",100));
@@ -69,6 +71,9 @@ public class AirportsApplication {
 			airportService.addNewTicket("Atlanta Airport","Berlin Airport");
 			airportService.addNewTicket("Atlanta Airport","London Airport");
 
+			airportService.assignTicketToPlane("London Airport","Hawker Hurricane","Berlin Airport");
+
+			appUserService.purchaseTicket("London Airport","Berlin Airport","admin@gmail.com");
 		};
 	}
 }
