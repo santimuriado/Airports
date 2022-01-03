@@ -9,13 +9,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Data
-@Entity(name = "Airport")
+@Entity(name = "airport")
 @Table(
-        name = "airport",
+        name = "airports",
         uniqueConstraints = {
                 @UniqueConstraint(name = "airport_name_unique", columnNames = "airport_name")
         }

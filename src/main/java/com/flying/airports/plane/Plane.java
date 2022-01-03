@@ -5,14 +5,15 @@ import com.flying.airports.ticket.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity(name = "Plane")
-@Table(name = "plane")
+@Entity(name = "plane")
+@Table(name = "planes")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Plane {
@@ -39,7 +40,7 @@ public class Plane {
     )
     private Integer maxNumberSeats;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
@@ -50,4 +51,5 @@ public class Plane {
         this.planeName = planeName;
         this.maxNumberSeats = maxNumberSeats;
     }
+
 }

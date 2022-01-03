@@ -32,26 +32,32 @@ public class AirportsApplication {
 						  TicketService ticketService,
 						  AppUserService appUserService) {
 		return args -> {
-			planeService.addNewPlane(new Plane("Hawker Hurricane",140));
-			planeService.addNewPlane(new Plane("U-2 Spy Plane",100));
-			planeService.addNewPlane(new Plane("B-52 Stratofortress",75));
-			planeService.addNewPlane(new Plane("F-16 Fighting Falcon",50));
+			planeService.addNewPlane(new Plane("Plane 1",250));
+			planeService.addNewPlane(new Plane("Plane 2",200));
+			planeService.addNewPlane(new Plane("Plane 3",175));
+			planeService.addNewPlane(new Plane("Plane 4",150));
+			planeService.addNewPlane(new Plane("Plane 5",125));
+			planeService.addNewPlane(new Plane("Plane 6",100));
+			planeService.addNewPlane(new Plane("Plane 7",75));
+			planeService.addNewPlane(new Plane("Plane 8",50));
+			planeService.addNewPlane(new Plane("Plane 9",25));
+
 
 			airportService.addNewAirport(new Airport("London Airport","London",20));
 			airportService.addNewAirport(new Airport("Atlanta Airport","Atlanta",10));
 			airportService.addNewAirport(new Airport("Berlin Airport","Berlin",5));
 
-			airportService.addNewPlane("London Airport","Hawker Hurricane");
-			airportService.addNewPlane("London Airport","U-2 Spy Plane");
-			airportService.addNewPlane("London Airport","B-52 Stratofortress");
-			airportService.addNewPlane("London Airport","F-16 Fighting Falcon");
+			airportService.addNewPlane("London Airport","Plane 1");
+			airportService.addNewPlane("London Airport","Plane 2");
+			airportService.addNewPlane("London Airport","Plane 3");
+			airportService.addNewPlane("London Airport","Plane 4");
 
-			airportService.addNewPlane("Atlanta Airport","Hawker Hurricane");
-			airportService.addNewPlane("Atlanta Airport","U-2 Spy Plane");
-			airportService.addNewPlane("Atlanta Airport","B-52 Stratofortress");
+			airportService.addNewPlane("Atlanta Airport","Plane 5");
+			airportService.addNewPlane("Atlanta Airport","Plane 6");
+			airportService.addNewPlane("Atlanta Airport","Plane 7");
 
-			airportService.addNewPlane("Berlin Airport","Hawker Hurricane");
-			airportService.addNewPlane("Berlin Airport","U-2 Spy Plane");
+			airportService.addNewPlane("Berlin Airport","Plane 8");
+			airportService.addNewPlane("Berlin Airport","Plane 9");
 
 			String adminToken = registrationService.register(new RegistrationRequest("admin","password","admin@gmail.com", ApplicationUserRole.ADMIN));
 			String userToken = registrationService.register(new RegistrationRequest("user","password","user@gmail.com", ApplicationUserRole.USER));
@@ -71,7 +77,7 @@ public class AirportsApplication {
 			airportService.addNewTicket("Atlanta Airport","Berlin Airport");
 			airportService.addNewTicket("Atlanta Airport","London Airport");
 
-			airportService.assignTicketToPlane("London Airport","Hawker Hurricane","Berlin Airport");
+			airportService.assignTicketToPlane("Plane 1","Berlin Airport");
 
 			appUserService.purchaseTicket("London Airport","Berlin Airport","admin@gmail.com");
 		};

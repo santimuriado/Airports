@@ -1,5 +1,8 @@
 package com.flying.airports.plane;
 
+import com.flying.airports.appuser.AppUser;
+import com.flying.airports.appuser.AppUserRepository;
+import com.flying.airports.ticket.Ticket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +15,7 @@ import java.util.Optional;
 public class PlaneService {
 
     private final PlaneRepository planeRepository;
+    private final AppUserRepository appUserRepository;
 
     public List<Plane> getPlanes() {
         return planeRepository.findAll();

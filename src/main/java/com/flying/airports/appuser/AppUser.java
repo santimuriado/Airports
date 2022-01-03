@@ -16,7 +16,7 @@ import java.util.Collections;
 @Entity(name = "AppUser")
 @Data
 @Table(
-        name = "appuser",
+        name = "appusers",
         uniqueConstraints = {
                 @UniqueConstraint(name = "appuser_email_unique", columnNames = "email")
         }

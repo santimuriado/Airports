@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(
-        name = "ticket",
+        name = "tickets",
         uniqueConstraints = {
                 @UniqueConstraint(name = "landing_airport_unique", columnNames = "landing_airport")
         }

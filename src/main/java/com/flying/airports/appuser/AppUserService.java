@@ -1,8 +1,6 @@
 package com.flying.airports.appuser;
 
-import com.flying.airports.airport.Airport;
 import com.flying.airports.airport.AirportService;
-import com.flying.airports.plane.Plane;
 import com.flying.airports.registration.token.ConfirmationToken;
 import com.flying.airports.registration.token.ConfirmationTokenService;
 import com.flying.airports.ticket.Ticket;
@@ -50,11 +48,15 @@ public class AppUserService implements UserDetailsService {
     @Transactional
     public void purchaseTicket(String takeOffAirport, String landingAirport,String appUserEmail) {
 
-        AppUser appUser = appUserRepository.findByEmail(appUserEmail).get();
+        Optional<AppUser> appUser = appUserRepository.findByEmail(appUserEmail);
+
+        if(appUser.isEmpty()) {
+            throw new IllegalStateException("user with that mail does not exist");
+        }
+
         Ticket ticket = ticketService.getSingleTicket(landingAirport);
-        Plane plane = airportService.getSinglePlane(takeOffAirport,landingAirport);
-        plane.getUsers().add(appUser);
-        appUser.setTicket(ticket);
+        appUser.get().setTicket(ticket);
+        airportService.getSinglePlane(takeOffAirport, ticket).getUsers().add(appUser.get());
     }
 
     public String signUpUser(AppUser appUser) {
