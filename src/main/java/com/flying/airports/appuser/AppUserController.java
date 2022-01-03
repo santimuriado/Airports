@@ -1,12 +1,10 @@
 package com.flying.airports.appuser;
 
 
+import com.flying.airports.ticket.PurchaseTicketRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +25,14 @@ public class AppUserController {
     @PreAuthorize("hasAuthority('admin:read')")
     public AppUser getSingleUser(@PathVariable("appUserId") Long appUserId) {
         return appUserService.getSingleUser(appUserId);
+    }
+
+    @PostMapping(path = "/purchaseticket")
+    @PreAuthorize("hasAuthority('user:write')")
+    public void purchaseTicket(@RequestBody PurchaseTicketRequest purchaseTicketRequest) {
+        appUserService.purchaseTicket(
+                purchaseTicketRequest.getTakeOffAirport(),
+                purchaseTicketRequest.getLandingAirport(),
+                purchaseTicketRequest.getUserEmail());
     }
 }

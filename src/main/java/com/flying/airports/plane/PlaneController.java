@@ -2,10 +2,7 @@ package com.flying.airports.plane;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +23,17 @@ public class PlaneController {
     @PreAuthorize("hasAuthority('admin:read')")
     public Plane getSinglePlane(@PathVariable("planeId") Long planeId) {
         return planeService.getSinglePlane(planeId);
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAuthority('admin:write')")
+    public void registerNewPlane(@RequestBody Plane plane) {
+        planeService.addNewPlane(plane);
+    }
+
+    @DeleteMapping(path = "{planeId}")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public void deletePlane(@PathVariable("planeId") Long planeId) {
+        planeService.deletePlane(planeId);
     }
 }

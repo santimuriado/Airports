@@ -5,7 +5,6 @@ import com.flying.airports.ticket.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class Plane {
     )
     private Integer maxNumberSeats;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 

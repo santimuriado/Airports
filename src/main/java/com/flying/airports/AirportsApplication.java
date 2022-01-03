@@ -79,7 +79,6 @@ public class AirportsApplication {
 
 			airportService.assignTicketToPlane("Plane 1","Berlin Airport");
 
-			appUserService.purchaseTicket("London Airport","Berlin Airport","admin@gmail.com");
 		};
 	}
 }
