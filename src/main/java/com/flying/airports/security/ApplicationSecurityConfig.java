@@ -2,6 +2,8 @@ package com.flying.airports.security;
 
 import com.flying.airports.appuser.AppUserService;
 import com.flying.airports.registration.RegistrationRequest;
+import com.flying.airports.registration.token.ConfirmationTokenRepository;
+import com.flying.airports.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import static com.flying.airports.security.ApplicationUserRole.ADMIN;
 import static com.flying.airports.security.ApplicationUserRole.USER;
@@ -40,7 +43,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin();
+                .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                    .defaultSuccessUrl("/project",true)
+                .and()
+                .logout()
+                    .logoutUrl("/logout")
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .logoutSuccessUrl("/login");
     }
 
     @Override
