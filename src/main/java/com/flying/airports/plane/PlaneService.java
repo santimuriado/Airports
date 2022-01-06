@@ -4,6 +4,7 @@ import com.flying.airports.appuser.AppUser;
 import com.flying.airports.appuser.AppUserRepository;
 import com.flying.airports.ticket.Ticket;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PlaneService {
 
     private final PlaneRepository planeRepository;
@@ -38,6 +40,7 @@ public class PlaneService {
         if(planeOptional.isPresent()) {
             throw new IllegalStateException("plane with that name already exists");
         }
+        log.info("Saving new plane {} to the database", plane.getPlaneName());
         planeRepository.save(plane);
     }
 
@@ -47,6 +50,7 @@ public class PlaneService {
         if(!exists) {
             throw new IllegalStateException ("plane with id does not exist");
         }
+        log.info("Deleting plane with id {}", planeId);
         planeRepository.deleteById(planeId);
     }
 

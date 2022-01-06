@@ -2,6 +2,7 @@ package com.flying.airports.ticket;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TicketService {
 
     private final TicketRepository ticketRepository;
@@ -45,7 +47,7 @@ public class TicketService {
         if(ticketOptional.isPresent()) {
             throw new IllegalStateException("ticket with that landing airport already exists");
         }
-
+        log.info("Saving new ticket {} to the database", ticket.getLandingAirport());
         ticketRepository.save(ticket);
     }
 

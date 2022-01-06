@@ -5,6 +5,7 @@ import com.flying.airports.plane.PlaneRepository;
 import com.flying.airports.ticket.Ticket;
 import com.flying.airports.ticket.TicketRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AirportService {
 
     private final AirportRepository airportRepository;
@@ -54,6 +56,7 @@ public class AirportService {
         if(airportOptional.isPresent()) {
             throw new IllegalStateException("airport name taken");
         }
+        log.info("Saving new Airport {} to the database", airport.getAirportName());
         airportRepository.save(airport);
     }
 
@@ -66,6 +69,7 @@ public class AirportService {
         Integer currentNumberPlanes = airport.getPlanes().size();
 
         if(currentNumberPlanes < airport.getMaxNumberPlanes()) {
+            log.info("Saving new plane {} to {}", plane.getPlaneName(), airport.getAirportName());
             airport.getPlanes().add(plane);
         }
         else {
@@ -81,6 +85,7 @@ public class AirportService {
 
         //TODO: check duplicate tickets.
 
+        log.info("Saving new ticket {} to {}", landingAirport, airportName);
         airport.getTickets().add(ticket);
     }
 
@@ -90,6 +95,7 @@ public class AirportService {
         if(!exists) {
             throw new IllegalStateException ("airport with id does not exist");
         }
+        log.info("Deleting airport with id {}", airportId);
         airportRepository.deleteById(airportId);
     }
 
@@ -103,14 +109,17 @@ public class AirportService {
                 new IllegalStateException("airport with id " + "does not exist"));
 
         if(airportName != null && airportName.length() > 0) {
+            log.info("Changed airport name to {}", airportName);
             airport.setAirportName(airportName);
         }
 
         if(maxNumberPlanes != null && maxNumberPlanes>0) {
+            log.info("Changed airport max number of planes to {}", maxNumberPlanes);
             airport.setMaxNumberPlanes(maxNumberPlanes);
         }
 
         if(city != null && city.length() > 0) {
+            log.info("Changed airport city to {}", city);
             airport.setCity(city);
         }
     }
@@ -129,6 +138,7 @@ public class AirportService {
             throw new IllegalStateException("ticket with that landing airport doesnt exist");
         }
 
+        log.info("Assigned ticket with destination to {} to {}", landingAirport, planeName);
         planeOptional.get().setTicket(ticketOptional.get());
     }
 

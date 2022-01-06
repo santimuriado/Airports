@@ -5,9 +5,12 @@ import com.flying.airports.plane.Plane;
 import com.flying.airports.ticket.Ticket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -20,26 +23,26 @@ public class AirportController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('user:read')")
-    public List<Airport> getAirports() {
-        return airportService.getAirports();
+    public ResponseEntity<List<Airport>> getAirports() {
+        return ResponseEntity.ok().body(airportService.getAirports());
     }
 
     @GetMapping(path = "{airportId}/planes")
     @PreAuthorize("hasAuthority('user:read')")
-    public List<Plane> getAirportPlanes(@PathVariable("airportId") Long airportId) {
-        return airportService.getAirportPlanes(airportId);
+    public ResponseEntity<List<Plane>> getAirportPlanes(@PathVariable("airportId") Long airportId) {
+        return ResponseEntity.ok().body(airportService.getAirportPlanes(airportId));
     }
 
     @GetMapping(path = "{airportId}/tickets")
     @PreAuthorize("hasAuthority('user:read')")
-    public List<Ticket> getAirportTickets(@PathVariable("airportId") Long airportId) {
-        return airportService.getAirportTickets(airportId);
+    public ResponseEntity<List<Ticket>> getAirportTickets(@PathVariable("airportId") Long airportId) {
+        return ResponseEntity.ok().body(airportService.getAirportTickets(airportId));
     }
 
     @GetMapping(path = "{airportId}")
     @PreAuthorize("hasAuthority('admin:read')")
-    public Airport getSingleAirport(@PathVariable("airportId") Long airportId) {
-        return airportService.getSingleAirport(airportId);
+    public ResponseEntity<Airport> getSingleAirport(@PathVariable("airportId") Long airportId) {
+        return ResponseEntity.ok().body(airportService.getSingleAirport(airportId));
     }
 
     @PostMapping

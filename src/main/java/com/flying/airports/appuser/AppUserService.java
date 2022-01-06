@@ -53,7 +53,6 @@ public class AppUserService implements UserDetailsService {
         if(appUser.isEmpty()) {
             throw new IllegalStateException("user with that mail does not exist");
         }
-
         Ticket ticket = ticketService.getSingleTicket(landingAirport);
         appUser.get().setTicket(ticket);
         airportService.getSinglePlane(takeOffAirport, ticket).getUsers().add(appUser.get());

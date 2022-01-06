@@ -29,8 +29,7 @@ public class AirportsApplication {
 	CommandLineRunner run(AirportService airportService,
 						  PlaneService planeService,
 						  RegistrationService registrationService,
-						  TicketService ticketService,
-						  AppUserService appUserService) {
+						  TicketService ticketService) {
 		return args -> {
 			planeService.addNewPlane(new Plane("Plane 1",250));
 			planeService.addNewPlane(new Plane("Plane 2",200));
@@ -41,7 +40,6 @@ public class AirportsApplication {
 			planeService.addNewPlane(new Plane("Plane 7",75));
 			planeService.addNewPlane(new Plane("Plane 8",50));
 			planeService.addNewPlane(new Plane("Plane 9",25));
-
 
 			airportService.addNewAirport(new Airport("London Airport","London",20));
 			airportService.addNewAirport(new Airport("Atlanta Airport","Atlanta",10));
@@ -78,6 +76,9 @@ public class AirportsApplication {
 			airportService.addNewTicket("Atlanta Airport","London Airport");
 
 			airportService.assignTicketToPlane("Plane 1","Berlin Airport");
+			airportService.assignTicketToPlane("Plane 5","London Airport");
+			airportService.assignTicketToPlane("Plane 8","Atlanta Airport");
+
 
 		};
 	}
