@@ -51,4 +51,14 @@ public class TicketService {
         ticketRepository.save(ticket);
     }
 
+    public void deleteTicket(Long ticketId) {
+
+        Boolean exists = ticketRepository.existsById(ticketId);
+        if(!exists) {
+            throw new IllegalStateException ("ticket with id does not exist");
+        }
+        log.info("Deleting ticket with id {}", ticketId);
+        ticketRepository.deleteById(ticketId);
+    }
+
 }
