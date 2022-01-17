@@ -25,7 +25,7 @@ public class PlaneController {
         return planeService.getSinglePlane(planeId);
     }
 
-    @PostMapping
+    @PostMapping(path = "save")
     @PreAuthorize("hasAuthority('admin:write')")
     public void registerNewPlane(@RequestBody Plane plane) {
         planeService.addNewPlane(plane);
@@ -36,4 +36,11 @@ public class PlaneController {
     public void deletePlane(@PathVariable("planeId") Long planeId) {
         planeService.deletePlane(planeId);
     }
+
+    @PutMapping(path = "{planeId}")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public void removeTicket(@PathVariable("planeId") Long planeId) {
+        planeService.removeTicketFromPlane(planeId);
+    }
+
 }

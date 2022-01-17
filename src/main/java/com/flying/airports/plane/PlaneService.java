@@ -1,13 +1,10 @@
 package com.flying.airports.plane;
 
-import com.flying.airports.appuser.AppUser;
-import com.flying.airports.appuser.AppUserRepository;
-import com.flying.airports.ticket.Ticket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,9 +14,9 @@ import java.util.Optional;
 public class PlaneService {
 
     private final PlaneRepository planeRepository;
-    private final AppUserRepository appUserRepository;
 
     public List<Plane> getPlanes() {
+
         return planeRepository.findAll();
     }
 
@@ -52,6 +49,19 @@ public class PlaneService {
         }
         log.info("Deleting plane with id {}", planeId);
         planeRepository.deleteById(planeId);
+    }
+
+    @Transactional
+    public void removeTicketFromPlane(Long planeId) {
+
+        Optional<Plane> planeOptional = planeRepository.findById(planeId);
+        if(planeOptional.isPresent()) {
+            planeOptional.get().setTicket(null);
+        }
+        else {
+            throw new IllegalStateException("plane with id does not exist");
+        }
+
     }
 
 }

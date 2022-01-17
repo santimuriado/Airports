@@ -45,7 +45,7 @@ public class AirportController {
         return ResponseEntity.ok().body(airportService.getSingleAirport(airportId));
     }
 
-    @PostMapping
+    @PostMapping(path = "save")
     @PreAuthorize("hasAuthority('admin:write')")
     public void registerNewAirport(@RequestBody Airport airport) {
         airportService.addNewAirport(airport);

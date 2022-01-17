@@ -79,7 +79,6 @@ public class AirportsApplication {
 			airportService.assignTicketToPlane("Plane 5","London Airport");
 			airportService.assignTicketToPlane("Plane 8","Atlanta Airport");
 
-
 		};
 	}
 }
