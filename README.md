@@ -9,6 +9,8 @@ Airports uses a postgreSQL database and form login based security.
 
 Airports uses java 11 and a web interface for viewing and testing emails during development called maildev. For instructions on installing and using maildev
 go to https://github.com/maildev/maildev.
+It also requires access to a database using PostgreSQL called "airports", however this can be changed in the "application.yml" file. POSTUSERNAME and
+POSTPASSWORD are env variables that must be set for it to access the database properly.
 
 # Run the Program
 
